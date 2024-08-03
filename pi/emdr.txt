@@ -1,5 +1,5 @@
 #install old raspberry pi os legacy lite version (raspberry pi 1, i did this on my oldest device)
-#set hostname to emir-controller
+#set hostname to emdr-controller
 
 # Install as Pi user
 sudo apt install libusb-1.0-0-dev python3-sdl2 git python3-pip lxde
