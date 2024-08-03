@@ -1,19 +1,44 @@
-
-#install old raspberry pi os
+#install old raspberry pi os legacy lite version (raspberry pi 1, i did this on my oldest device)
 #set hostname to emir-controller
-#set passwd as emdr1883
 
-#as Pi
-sudo apt install libusb-1.0-0-dev python3-sdl2
-git clone https://github.com/Harvey71/emdr
-sudo pip3 install -r requirements.txt
-
-sudo python3 main.py fullscreen touchscreen>~/.config/lxsession/LXDE-pi/AutoStart
+# Install as Pi user
+sudo apt install libusb-1.0-0-dev python3-sdl2 git python3-pip lxde
+git clone https://github.com/Harvey71/emdr && cp emdr/controller/* ~ -r && sudo pip3 install -r requirements.txt
+mkdir -p ~/.config/lxsession/LXDE && echo sudo python3 main.py fullscreen touchscreen>~/.config/lxsession/LXDE/autostart
 
 
-#as root
-rm -rf LCD-show
-git clone https://github.com/goodtft/LCD-show.git
-chmod -R 755 LCD-show&&cd LCD-show&&./MHS35-show 180
-echo "dtparam=audio=on"|cat - /boot/config.txt >/boot/config.tmp
-mv /boot/config.tmp /boot/config.txt
+
+
+# install as root (sudo su)
+rm -rf LCD-show && git clone https://github.com/goodtft/LCD-show.git && chmod -R 755 LCD-show && cd LCD-show && ./MHS35-show 180
+echo "dtparam=audio=on"|cat - /boot/config.txt >/boot/config.tmp && mv /boot/config.tmp /boot/config.txt
+
+
+
+---------------------------------------------------------------------------------
+Solution run PulseAudio for all your users
+
+Add bellow lines into /etc/systemd/system/pulseaudio.service file and save
+
+[Unit]
+Description=PulseAudio system server
+
+[Service]
+Type=notify
+ExecStart=pulseaudio --daemonize=no --system --realtime --log-target=journal
+
+[Install]
+WantedBy=multi-user.target
+Enable service
+
+sudo systemctl --system enable pulseaudio.service
+sudo systemctl --system start pulseaudio.service
+sudo systemctl --system status pulseaudio.service
+Edit Client conf /etc/pulse/client.conf and replace ass bellow
+
+default-server = /var/run/pulse/native
+autospawn = no
+Add root to pulse group
+
+sudo adduser root pulse-access
+And finally reboot the system
