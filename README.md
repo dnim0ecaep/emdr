@@ -314,9 +314,16 @@ Linux OS on a SD card, install and start the LCD driver for the touchscreen disp
 change password, configure for graphical desktop with auto login, download and install the controller software
 from my repository and set up the desktop to autostart the controller software after boot.
 
+
 But fortunately, there is [PiBakery](https://www.pibakery.org/). You can use the "recipe"-File from my repository
 (subdirectory "pi") and PiBakery to burn a ready-to-go SD-card. At the very first boot, the Raspberry Pi will download
 and install all necessary software. For that, the Pi will have to have internet access. Just attach the Pi to your
 local ethernet. After a while, the Pi reboots and shows the controller software. From now on, no network connection
 is needed again. You can use the Pi as a simple controller panel for the EMDR equipment. 
-
+-------
+Updated controller process as Pi Bakery has many challanging issues.
+1. Install legacy version of raspberry pi OS
+2. Set Hostname to EMDR-controller
+3. run pi commands
+4. run commands as root
+5. Perform Pulse Audio fix
